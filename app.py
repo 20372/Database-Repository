@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, session
 import sqlite3
-from sqlite3 import Error
+from sqlite3 import Error           #imports extra modules I need for my code
 from flask_bcrypt import Bcrypt
 
 
@@ -8,17 +8,17 @@ from flask_bcrypt import Bcrypt
 DATABASE = ""
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-app.secret_key = "ufbbwu19274"
-def create_connection(db_file):
+app.secret_key = "ufbbwu19274" #key used for encrypting the password
+def create_connection(db_file): #connects to the database
     try:
         connection = sqlite3.connect(db_file)
         return connection
     except Error as e:
-        print(e)
+        print(e)   #prints the error message
     return None
 
 
-def is_logged_in():
+def is_logged_in():    #checks if the user has logged in
     if session.get("email") is None:
         print("not loggied in ")
         return False
@@ -30,11 +30,10 @@ def is_logged_in():
 def render_homepage():
     return render_template('home.html', logged_in = is_logged_in())
 
-
 @app.route('/menu/cat_id>')
 def render_menu_page(cat_id):
-    con = create_connection(DATABASE)
-    query = "SELECT name, description, volume, image, price FROM products WHERE cat_id=?>"
+    con = create_connection(DATABASE)  #uses the create_connection function to make a variable to access the database
+    query = "SELECT name, description, volume, image FROM products WHERE cat_id=?>" #Getting the information needed from the database
     cur = con.cursor()
     cur.execute(query, (cat_id, ))
     product_list = cur.fetchall()
@@ -42,7 +41,7 @@ def render_menu_page(cat_id):
     cur = con.cursor()
     cur.execute(query)
     category_list = cur.fetchall()
-    con.close()
+    con.close() #closes the connection to the database
     print(product_list)
     return render_template('menu.html', products=product_list, categories=category_list)
 
@@ -53,25 +52,25 @@ def render_contact_page():
 
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
-    if is_logged_in():
+    if is_logged_in(): #uses the is login function to check if user is logged in
         return redirect('/menu/1')
     if request.method == "POST":
         email = request.form['email'].strip().lower()
         password = request.form['password'].strip()
 
-        query = """SELECT id, fname, password FROM user WHERE email = ?"""
+        query = """SELECT id, fname, password FROM user WHERE email = ?"""  #gets id, first name and password from the datanase
         con = create_connection(DATABASE)
         cur = con.cursor()
         cur.execute(query, (email, ))
         user_data = cur.fetchone()
-        con.close()
+        con.close()   #closes the connection to the database
 
         try:
             user_id = user_data[0]
             first_name = user_data[1]
             db_password = user_data[2]
         except IndexError:
-            return redirect("/login?error=Invalid+username+or+password")
+            return redirect("/login?error=Invalid+username+or+password")  #returns a error message if user inputs an incorrect password or username
         if not bcrypt.check_password_hash(db_password, password):
             return redirect(request.referrer + '?error=Email+invalid+or+password+incorrect')
 
