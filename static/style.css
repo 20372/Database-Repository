@@ -40,13 +40,13 @@ h2 {
 }
 
 nav {
-    background-color: rgba(44, 62, 80, 1.0); /* darkest blue */
+    background-color: rgb(232, 31, 39); /* darkest blue */
     text-align: center;
     /*color: rgba(52, 152, 219, 1.0);!*light blue*!*/
     font-size: 1.5rem;
     padding-top: 0.4rem;
     padding-bottom: 0.7rem;
-    color: rgba(52, 152, 219, 1.0); /*light blue*/
+    color: rgb(255, 255, 255);
 }
 
 .navbar-brand {
@@ -57,6 +57,7 @@ nav {
 .navbar-links {
     display: inline;
     float: right;
+    color: rgb(255, 255, 255);
 }
 
 nav a {
@@ -71,11 +72,11 @@ nav a {
 nav a:hover {
     /*color: rgba(44, 62, 80, 1.0); !* darkest blue *!*/
     /*background-color: rgba(52, 152, 219, 1.0); !*light blue*!*/
-    border-bottom: 3px solid rgba(52, 152, 219, 1.0);
+    border-bottom: 3px solid rgb(0, 0, 0);
 }
 
 a, a:visited {
-    color: rgba(52, 152, 219, 1.0);
+    color: rgb(0, 0, 0);
     /*color:hotpink;*/
     text-decoration: none;
 }
@@ -98,7 +99,7 @@ a, a:visited {
     /*padding: 0.5rem;*/
     /*margin: 1vw;*/
     border: 1px solid rgba(189, 195, 199, 1.0);
-    color: rgba(44, 62, 80, 1.0);
+    color: rgb(248, 79, 79);
     margin-bottom: 0.5rem;
 }
 

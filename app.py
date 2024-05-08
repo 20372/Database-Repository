@@ -46,9 +46,9 @@ def render_menu_page(cat_id):
     return render_template('menu.html', products=product_list, categories=category_list)
 
 
-@app.route('/contact')
+@app.route('/dictionary_page')
 def render_contact_page():
-    return render_template('contact.html', logged_in = is_logged_in())
+    return render_template('dictionary_page.html', logged_in = is_logged_in())
 
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
