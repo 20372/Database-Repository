@@ -51,7 +51,7 @@ def render_menu_page(cat_id):
 
 
 @app.route('/dictionary_page')
-def render_contact_page():
+def render_dictionary_page():
     return render_template('dictionary_page.html', logged_in = is_logged_in())
 
 @app.route('/login', methods=['POST', 'GET'])
