@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 
 
 
-DATABASE = ""
+DATABASE = "Database"
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 app.secret_key = "ufbbwu19274" #key used for encrypting the password
@@ -27,7 +27,11 @@ def is_logged_in():    #checks if the user has logged in
         return True
 
 @app.route('/')
-def render_homepage():
+def render_home():
+    return render_template('home.html', logged_in = is_logged_in())
+
+@app.route('/home')
+def render_home_page():
     return render_template('home.html', logged_in = is_logged_in())
 
 @app.route('/menu/cat_id>')
