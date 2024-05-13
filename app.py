@@ -124,7 +124,7 @@ def logout():
     return redirect("/?message=See+you+next+time!")
 
 @app.route('/editor')
-def render_contact_page():
+def editor():
     return render_template('editor.html', logged_in = is_logged_in())
 
 app.run(host='0.0.0.0', debug=True)
