@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 
 
 
-DATABASE = "Database"
+DATABASE = "identifier.sqlite"
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 app.secret_key = "ufbbwu19274" #key used for encrypting the password
@@ -20,7 +20,7 @@ def create_connection(db_file): #connects to the database
 
 def is_logged_in():    #checks if the user has logged in
     if session.get("email") is None:
-        print("not loggied in ")
+        print("not logged in ")
         return False
     else:
         print("logged in!")
@@ -57,12 +57,12 @@ def render_dictionary_page():
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
     if is_logged_in(): #uses the is login function to check if user is logged in
-        return redirect('/menu/1')
+        return redirect('/home')
     if request.method == "POST":
         email = request.form['email'].strip().lower()
         password = request.form['password'].strip()
 
-        query = """SELECT id, fname, password FROM user WHERE email = ?"""  #gets id, first name and password from the datanase
+        query = """SELECT users_id, f_name, password FROM users_table WHERE email = ?"""  #gets id, first name and password from the database
         con = create_connection(DATABASE)
         cur = con.cursor()
         cur.execute(query, (email, ))
@@ -74,7 +74,7 @@ def render_login():
             first_name = user_data[1]
             db_password = user_data[2]
         except IndexError:
-            return redirect("/login?error=Invalid+username+or+password")  #returns a error message if user inputs an incorrect password or username
+            return redirect("/login?error=Invalid+username+or+password")
         if not bcrypt.check_password_hash(db_password, password):
             return redirect(request.referrer + '?error=Email+invalid+or+password+incorrect')
 
@@ -88,11 +88,11 @@ def render_login():
 @app.route('/signup', methods=['POST', 'GET'])
 def render_signup():
     if is_logged_in():
-        return redirect('/menu/1')
+        return redirect('/home')
     if request.method == 'POST':
         print(request.form)
-        fname = request.form.get('fname').title().strip()
-        lname = request.form.get('lname').title().strip()
+        f_name = request.form.get('f_name').title().strip()
+        l_name = request.form.get('l_name').title().strip()
         email = request.form.get('email').lower().strip()
         password = request.form.get('password')
         password2 = request.form.get('password2')
@@ -104,11 +104,11 @@ def render_signup():
 
         hashed_password = bcrypt.generate_password_hash(password)
         con = create_connection(DATABASE)
-        query = "INSERT INTO user (fname, lname, email, password) VALUES (?,?,?,?)"
+        query = "INSERT INTO users_table (f_name, l_name, email, password) VALUES (?,?,?,?)"
         cur = con.cursor()
 
         try:
-            cur.execute(query, (fname, lname, email, hashed_password))
+            cur.execute(query, (f_name, l_name, email, hashed_password))
             con.commit()
         except sqlite3.IntegrityError:
             con.close()
