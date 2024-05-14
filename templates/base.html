@@ -17,7 +17,9 @@
         <div class="navbar-links">
             <a href="/home">Home</a>
             <a href="/dictionary_page">Dictionary</a>
+            {% if logged_in %}
             <a href="/editor">Teachers</a>
+            {% endif %}
             {% if logged_in %}
             <a href="/logout">Logout</a>
             {% else %}
