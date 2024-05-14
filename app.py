@@ -91,8 +91,8 @@ def render_signup():
         return redirect('/home')
     if request.method == 'POST':
         print(request.form)
-        f_name = request.form.get('f_name').title().strip()
-        l_name = request.form.get('l_name').title().strip()
+        fname = request.form.get('fname').title().strip()
+        lname = request.form.get('lname').title().strip()
         email = request.form.get('email').lower().strip()
         password = request.form.get('password')
         password2 = request.form.get('password2')
@@ -108,7 +108,7 @@ def render_signup():
         cur = con.cursor()
 
         try:
-            cur.execute(query, (f_name, l_name, email, hashed_password))
+            cur.execute(query, (fname, lname, email, hashed_password))
             con.commit()
         except sqlite3.IntegrityError:
             con.close()
