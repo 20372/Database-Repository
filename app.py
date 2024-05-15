@@ -183,8 +183,21 @@ def render_delete_category_confirm(cat_id):
     con.close()
     return redirect("/editor")
 
-
-
+@app.route('/add_word', methods=['POST', 'GET'])
+def add_word():
+    if not is_logged_in():
+        return redirect('//?message=Need+to+be+logged+in+')
+    if request.method == 'POST':
+        print(request.form)
+        words = request.form.get('english_word, te_reo_word, description, category, level').lower().strip()
+        print(words)
+        con = create_connection(DATABASE)
+        query = "INSERT INTO table_word (english_word, te_reo_word, description, category, level ) VALUES (? ? ? ? ?)"
+        cur = con.cursor()
+        cur.execute(query, words, )
+        con.commit()
+        con.close()
+        return redirect('/editor')
 
 
 
