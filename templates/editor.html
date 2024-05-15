@@ -41,76 +41,36 @@
 
     </form>
 
+    <h4>Add Word</h4>
 
-
-
-
-<body>
-
-    <h2>Add New Word</h2>
-    <form action="/add_word" method="post">
-        <label for="english_word">English Word:</label><br>
-        <input type="text" id="english_word" name="english_word"><br>
-        <label for="te_reo_word">Te reo Word:</label><br>A
-        <input type="text" id="te_reo_word" name="te_reo_word"><br>
+    <form class="myform" method="post" action="/add_word">
+     <div class="form-group">
+         <label for="english_word">English Word:</label><br>
+         <input type="text" id="english_word" name="english_word"><br>
+         <label for="te_reo_word">Te reo Word:</label><br>
+         <input type="text" id="te_reo_word" name="te_reo_word"><br>
         <label for="level">Level:</label><br>
         <input type="text" id="level" name="level"><br>
         <label for="category">Category:</label><br>
-        <select id="category" name="category">
-            <option value="Actions">Actions</option>
-            <option value="Animals">Animals</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Culture/Religion">Culture/Religion</option>
-            <option value="Descriptive">Descriptive</option>
-            <option value="Emotions">Emotions</option>
-            <option value="Food">Food</option>
-            <option value="Math/Number">Math/Number</option>
-            <option value="Outdoors">Outdoors</option>
-            <option value="People">People</option>
-            <option value="Places">Places</option>
-            <option value="Plants">Plants</option>
-            <option value="School">School</option>
-            <option value="Sport">Sport</option>
-            <option value="Technology">Technology</option>
-            <option value="Time">Time</option>
-        </select><br>
-        <label for="definition">Definition:</label><br>
-        <textarea id="definition" name="definition"></textarea><br><br>
-        <input type="submit" value="Add Word">
-    </form>
+         <select id="cat_id" name="cat_id">
+                    {% for category in categories %}
+                    <option value="{{ category[0] }}, {{ category[1] }}">{{ category[1] }}</option>
+                    {% endfor %}
+         </select>
+        <h1></h1>
+        <div class="form-label"></div>
+            <div class="form-element"><input type="submit" value="Add Word"></div>
+           </div>
+        </div>
 
-    <h2>Delete</h2>
-    <form action="/delete_word" method="post">
-        <label for="english_word">English Word:</label><br>
-        <input type="text" id="english_word" name="english_word"><br>
-        <label for="maori_word">Te reo Word:</label><br>
-        <input type="text" id="maori_word" name="maori_word"><br>
-        <label for="level">Level:</label><br>
-        <input type="text" id="level" name="level"><br>
-        <label for="category">Category:</label><br>
-        <select id="category" name="category">
-            <option value="Actions">Actions</option>
-            <option value="Animals">Animals</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Culture/Religion">Culture/Religion</option>
-            <option value="Descriptive">Descriptive</option>
-            <option value="Emotions">Emotions</option>
-            <option value="Food">Food</option>
-            <option value="Math/Number">Math/Number</option>
-            <option value="Outdoors">Outdoors</option>
-            <option value="People">People</option>
-            <option value="Places">Places</option>
-            <option value="Plants">Plants</option>
-            <option value="School">School</option>
-            <option value="Sport">Sport</option>
-            <option value="Technology">Technology</option>
-            <option value="Time">Time</option>
-        </select><br>
-        <label for="definition">Definition:</label><br>
-        <textarea id="definition" name="definition"></textarea><br><br>
-        <input type="submit" value="Delete Word">
-    </form>
-</body>
+
+
+     </form>
+
+
+
+
+
 </html>
 
 </html>
