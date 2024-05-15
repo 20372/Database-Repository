@@ -129,6 +129,63 @@ def logout():
 
 @app.route('/editor')
 def editor():
-    return render_template('editor.html', logged_in = is_logged_in())
+    if not is_logged_in():
+        return redirect('//?message=Need+to+be+logged+in+thanks')
+    con = create_connection(DATABASE)
+    query = "SELECT cat_id, category_name FROM category_table"
+    cur = con.cursor()
+    cur.execute(query)
+    category_list = cur.fetchall()
+    con.close()
+
+
+    return render_template('editor.html', logged_in = is_logged_in(), categories=category_list)
+
+@app.route('/add_category', methods=['POST', 'GET'])
+def add_category():
+    if not is_logged_in():
+        return redirect('//?message=Need+to+be+logged+in+')
+    if request.method == 'POST':
+        print(request.form)
+        cat_name = request.form.get('name').lower().strip()
+        print(cat_name)
+        con = create_connection(DATABASE)
+        query = "INSERT INTO category_table (category_name) VALUES (?)"
+        cur = con.cursor()
+        cur.execute(query, (cat_name, ))
+        con.commit()
+        con.close()
+        return redirect('/editor')
+
+@app.route('/delete_category', methods=['POST', 'GET'])
+def render_delete_category():
+    if not is_logged_in():
+        return redirect('//?message=Need+to+be+logged+in+')
+    if request.method == 'POST':
+        category = request.form.get('cat_id')
+        print(category)
+        category = category.split(", ")
+        cat_id = category[0]
+        cat_name = category[1]
+        return render_template("delete_confirm.html", id=cat_id, name=cat_name, type="category")
+
+    return redirect('/editor')
+
+@app.route('/delete_category_confirm/<cat_id>')
+def render_delete_category_confirm(cat_id):
+    if not is_logged_in():
+        return redirect('//?message=Need+to+be+logged+in+')
+    con = create_connection(DATABASE)
+    query = "DELETE FROM category_table WHERE cat_id = ?"
+    cur = con.cursor()
+    cur.execute(query, (cat_id, ))
+    con.commit()
+    con.close()
+    return redirect("/editor")
+
+
+
+
+
 
 app.run(host='0.0.0.0', debug=True)
