@@ -2,7 +2,6 @@
 
 {% block pageheading %}Admin Page{% endblock %}
 {% block main %}
-<h3>Category Admin</h3>
 
     <h4>Add Category</h4>
 
@@ -65,9 +64,22 @@
            </div>
         </div>
 
-
-
      </form>
+
+        <h3>Delete Word</h3>
+
+    <form class="myform" method="post" action="/delete_word">
+        <div class="form-group">
+            <div class="form-label"><label for="name">Word_id:</label></div>
+            <div class="form-element"><input type="text" name="word" id="word" required></div>
+        </div>
+        <div class="form-group">
+            <div class="form-label"></div>
+            <div class="form-element"><input type="submit" value="Delete Word"></div>
+        </div>
+
+        </form>
+
 
 
 

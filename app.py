@@ -190,16 +190,34 @@ def add_word():
         return redirect('//?message=Need+to+be+logged+in+')
     if request.method == 'POST':
         print(request.form)
-        words = request.form.get('english_word, te_reo_word, description, category, level').lower().strip()
-        print(words)
+        english_word = request.form.get('english_word').lower().strip()
+        te_reo_word = request.form.get('te_reo_word').lower().strip()
+        description = request.form.get('description').lower().strip()
+        category = request.form.get('cat_id').lower().strip()
+        category_split = category.split(", ")
+        category = category_split[1].title()
+        print(category)
+        level = request.form.get('level').lower().strip()
         con = create_connection(DATABASE)
-        query = "INSERT INTO table_word (english_word, te_reo_word, description, category, level ) VALUES (? ? ? ? ?)"
+        query = "INSERT INTO table_word (english_word, te_reo_word, description, category, level) VALUES (?, ?, ?, ?, ?)"
         cur = con.cursor()
-        cur.execute(query, words, )
+        words = (english_word, te_reo_word, description, category, level)
+        cur.execute(query, words)
         con.commit()
         con.close()
         return redirect('/editor')
 
+@app.route('/delete_word', methods=['POST', 'GET'])
+def render_delete_word():
+    if not is_logged_in():
+        return redirect('//?message=Need+to+be+logged+in+')
+    if request.method == 'POST':
+        word = request.form.get('word')
+        print(word)
+        word_name = word
+        word_id = word
+        return render_template("delete_confirm.html", id=word_id, name=word_name, type="word")
 
+    return redirect('/editor')
 
 app.run(host='0.0.0.0', debug=True)
