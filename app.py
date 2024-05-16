@@ -26,33 +26,33 @@ def is_logged_in():    #checks if the user has logged in
         print("logged in!")
         return True
 
+def is_logged_in_teacher():
+        email = session.get("email")
+        con = create_connection(DATABASE)
+        cur = con.cursor()
+        query = """SELECT is_teacher FROM users_table WHERE email = ?"""
+        cur.execute(query, (email, ))
+        teacher = cur.fetchall()
+        con.close()
+        print(teacher)
+        if ('yes',) in teacher:
+            print("teacher logged in!")
+            return True
+        else:
+            return False
 @app.route('/')
 def render_home():
-    return render_template('home.html', logged_in = is_logged_in())
+    return render_template('home.html', logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
 
 @app.route('/home')
 def render_home_page():
-    return render_template('home.html', logged_in = is_logged_in())
-
-@app.route('/menu/cat_id>')
-def render_menu_page(cat_id):
-    con = create_connection(DATABASE)  #uses the create_connection function to make a variable to access the database
-    query = "SELECT name, description, volume, image FROM products WHERE cat_id=?>" #Getting the information needed from the database
-    cur = con.cursor()
-    cur.execute(query, (cat_id, ))
-    product_list = cur.fetchall()
-    query = "SELECT id, name FROM category"
-    cur = con.cursor()
-    cur.execute(query)
-    category_list = cur.fetchall()
-    con.close() #closes the connection to the database
-    print(product_list)
-    return render_template('menu.html', products=product_list, categories=category_list)
-
+    return render_template('home.html', logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
 
 @app.route('/dictionary_page')
 def render_dictionary_page():
-    return render_template('dictionary_page.html', logged_in = is_logged_in())
+    if is_logged_in_teacher():
+        print("Teacher if logged in!")
+    return render_template('dictionary_page.html', logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
 
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
@@ -83,7 +83,7 @@ def render_login():
         session['firstname'] = first_name
         print(session)
         return redirect('/')
-    return render_template("login.html", logged_in = is_logged_in())
+    return render_template("login.html", logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
 
 @app.route('/signup', methods=['POST', 'GET'])
 def render_signup():
@@ -96,6 +96,7 @@ def render_signup():
         email = request.form.get('email').lower().strip()
         password = request.form.get('password')
         password2 = request.form.get('password2')
+        teacher = request.form.get("teacher")
 
         if password != password2:
             return redirect("/signup?error='Passwords do not match.")
@@ -104,11 +105,11 @@ def render_signup():
 
         hashed_password = bcrypt.generate_password_hash(password)
         con = create_connection(DATABASE)
-        query = "INSERT INTO users_table (f_name, l_name, email, password) VALUES (?,?,?,?)"
+        query = "INSERT INTO users_table (f_name, l_name, email, password, is_teacher) VALUES (?,?,?,?,?)"
         cur = con.cursor()
 
         try:
-            cur.execute(query, (fname, lname, email, hashed_password))
+            cur.execute(query, (fname, lname, email, hashed_password, teacher))
             con.commit()
         except sqlite3.IntegrityError:
             con.close()
@@ -118,7 +119,7 @@ def render_signup():
         con.close()
 
         return redirect("/login")
-    return render_template("signup.html", logged_in = is_logged_in())
+    return render_template("signup.html", logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
 
 @app.route('/logout')
 def logout():
@@ -139,7 +140,7 @@ def editor():
     con.close()
 
 
-    return render_template('editor.html', logged_in = is_logged_in(), categories=category_list)
+    return render_template('editor.html', logged_in = is_logged_in(), categories=category_list, teacher_log = is_logged_in_teacher())
 
 @app.route('/add_category', methods=['POST', 'GET'])
 def add_category():
