@@ -218,9 +218,12 @@ def render_delete_word():
         cur = con.cursor()
         cur.execute('SELECT * FROM table_word WHERE word_id = ?', (word_id,))
         row = cur.fetchone()
+        if row is None:
+            return redirect('/editor?word_id+is+not+valid')
         word_name = row[1]
         print(word_name)
         con.close()
+
         return render_template("delete_confirm.html", id=word_id, name=word_name, type="word")
 
     return redirect('/editor')
