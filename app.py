@@ -212,12 +212,30 @@ def render_delete_word():
     if not is_logged_in():
         return redirect('//?message=Need+to+be+logged+in+')
     if request.method == 'POST':
-        word = request.form.get('word')
-        print(word)
-        word_name = word
-        word_id = word
+        word_id = request.form.get('word_id')
+        print(word_id)
+        con = create_connection(DATABASE)
+        cur = con.cursor()
+        cur.execute('SELECT * FROM table_word WHERE word_id = ?', (word_id,))
+        row = cur.fetchone()
+        word_name = row[1]
+        print(word_name)
+        con.close()
         return render_template("delete_confirm.html", id=word_id, name=word_name, type="word")
 
     return redirect('/editor')
+
+@app.route('/delete_word_confirm/<word_id>')
+def render_delete_word_confirm(word_id):
+    if not is_logged_in():
+        return redirect('//?message=Need+to+be+logged+in+')
+    con = create_connection(DATABASE)
+    query = "DELETE FROM table_word WHERE word_id = ?"
+    cur = con.cursor()
+    cur.execute(query, (word_id,))
+    con.commit()
+    con.close()
+    return redirect("/editor")
+
 
 app.run(host='0.0.0.0', debug=True)
