@@ -52,7 +52,18 @@ def render_home_page():
 def render_dictionary_page():
     if is_logged_in_teacher():
         print("Teacher if logged in!")
-    return render_template('dictionary_page.html', logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
+    con = create_connection(DATABASE)
+    query = "SELECT cat_id, category_name FROM category_table"
+    cur = con.cursor()
+    cur.execute(query)
+    category_list = cur.fetchall()
+    query = "SELECT * FROM table_word"
+    cur = con.cursor()
+    cur.execute(query)
+    word = cur.fetchall()
+    con.close()
+
+    return render_template('dictionary_page.html', logged_in = is_logged_in(), categories=category_list, words=word, teacher_log = is_logged_in_teacher())
 
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():

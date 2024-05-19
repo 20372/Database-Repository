@@ -1,23 +1,52 @@
-{% extends "base.html" %}
-
-{% block pageheading %}Dictionary Page{% endblock %}
+{% extends 'base.html' %}
+{% block pageheading %}Maori and English Words{% endblock %}
 
 {% block main %}
-<body>
-<table>
-    <thead>
-        <tr>
-            <th>English Word</th>
-            <th>Te Reo Word</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Level</th>
-        </tr>
-    </thead>
-</table>
-</body>
+    <div class="catergories_list-dictionary">
+        <ul>
+            {% for catergory in catergories %}
+                <li>
+                    <a href="/dictionary/{{ catergory[0] }}">{{ catergory[1] }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
+    <form action="{{ url_for('render_dictionary_page', cat_id=cat_id) }}" method="GET">
+        <label for="word-search">Enter a word:</label>
+        <input type="text" name="search" value="{{ search_term }}" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
 
-<strong><em></em></strong>
+    <table>
+        <thead>
+            <tr>
+                <th>English Word</th>
+                <th>Maori Word</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Level</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for word in words %}
+                <tr>
+                    <td><a href="/words_info/{{ word[0] }}">{{ word[1] }}</a></td>
+                    <td>{{ word[2] }}</td>
+                    <td>{{ word[3] }}</td>
+                    <td>{{ word[4] }}</td>
+                    <td>{{ word[5] }}</td>
+                    <td>{{ word[6] }}</td>
+
+                    <td>
+                        <img src="static/images/{{ word[1] }}.jpg" alt="{{ word[1] }}" style="max-width: 100px;">
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
 
 {% endblock %}
