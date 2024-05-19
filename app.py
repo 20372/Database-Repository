@@ -62,8 +62,22 @@ def render_dictionary_page():
     cur.execute(query)
     word = cur.fetchall()
     con.close()
-
     return render_template('dictionary_page.html', logged_in = is_logged_in(), categories=category_list, words=word, teacher_log = is_logged_in_teacher())
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def render_search():
+    search = request.form['search']
+    title = "Search for " + search
+    query = "SELECT word_id, english_word, te_reo_word, description, category, level FROM table_word WHERE word_id like ? OR english_word like ? OR te_reo_word like ? OR description like ? OR category like ? OR level like ?"
+    query2 = "SELECT cat_id, category_name FROM category_table WHERE cat_id like ? or category_name like ?"
+    search = "%" + search + "%"
+    con = create_connection(DATABASE)
+    cur = con.cursor()
+    cur.execute(query, (search, search, search, search, search, search))
+    word = cur.fetchall()
+    con.close()
+    return render_template('dictionary_page.html', logged_in=is_logged_in(), categories=category_list, words=word, teacher_log=is_logged_in_teacher())
 
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
