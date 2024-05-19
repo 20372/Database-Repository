@@ -52,12 +52,13 @@ def render_home_page():
 def render_dictionary_page():
     if is_logged_in_teacher():
         print("Teacher if logged in!")
+
     con = create_connection(DATABASE)
     query = "SELECT cat_id, category_name FROM category_table"
     cur = con.cursor()
     cur.execute(query)
     category_list = cur.fetchall()
-    query = "SELECT * FROM table_word"
+    query = "SELECT * FROM table_word WHERE category=?"
     cur = con.cursor()
     cur.execute(query)
     word = cur.fetchall()
@@ -70,7 +71,6 @@ def render_search():
     search = request.form['search']
     title = "Search for " + search
     query = "SELECT word_id, english_word, te_reo_word, description, category, level FROM table_word WHERE word_id like ? OR english_word like ? OR te_reo_word like ? OR description like ? OR category like ? OR level like ?"
-    query2 = "SELECT cat_id, category_name FROM category_table WHERE cat_id like ? or category_name like ?"
     search = "%" + search + "%"
     con = create_connection(DATABASE)
     cur = con.cursor()
