@@ -34,9 +34,16 @@ def is_logged_in_teacher():
         cur.execute(query, (email, ))
         teacher = cur.fetchall()
         con.close()
-        print(teacher)
+        print("yooo", teacher)
         if ('yes',) in teacher:
             print("teacher logged in!")
+            con = create_connection(DATABASE)
+            query = "SELECT users_id FROM users_table"
+            cur = con.cursor()
+            cur.execute(query)
+            test = cur.fetchall()
+            print(test)
+
             return True
         else:
             return False
@@ -57,12 +64,28 @@ def render_dictionary_page():
     cur = con.cursor()
     cur.execute(query)
     category_list = cur.fetchall()
-    query2 = "SELECT english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id"
+    query2 = "SELECT word_id, english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id"
     cur = con.cursor()
     cur.execute(query2)
     word = cur.fetchall()
     con.close()
     return render_template('dictionary_page.html', logged_in = is_logged_in(), categories=category_list, words=word, teacher_log = is_logged_in_teacher())
+
+@app.route('/word_info/<word_id>')
+def render_word_info(word_id):
+    if is_logged_in_teacher():
+        print("Teacher if logged in!")
+    con = create_connection(DATABASE)
+    query = "SELECT cat_id, category_name FROM category_table"
+    cur = con.cursor()
+    cur.execute(query)
+    category_list = cur.fetchall()
+    query2 = "SELECT english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id"
+    cur = con.cursor()
+    cur.execute(query2)
+    word = cur.fetchall()
+    con.close()
+    return render_template('word_info.html', logged_in = is_logged_in(), categories=category_list, words=word, teacher_log = is_logged_in_teacher())
 
 
 
@@ -210,10 +233,12 @@ def add_word():
         cat_fk = category_split[0].title()
         print(category)
         level = request.form.get('level').lower().strip()
+        users_fk = request.form.get('')
         con = create_connection(DATABASE)
-        query = "INSERT INTO table_word (english_word, te_reo_word, description, cat_fk, level ) VALUES (?, ?, ?, ?, ?)"
+        query = "INSERT INTO table_word (english_word, te_reo_word, description, cat_fk, level, users_fk ) VALUES (?, ?, ?, ?, ?, ?)"
+
         cur = con.cursor()
-        words = (english_word, te_reo_word, description, cat_fk, level)
+        words = (english_word, te_reo_word, description, cat_fk, level, users_fk)
         cur.execute(query, words)
         con.commit()
         con.close()

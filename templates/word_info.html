@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-{% block pageheading %}Maori and English Words{% endblock %}
+{% block pageheading %}Maori and English Words More Info{% endblock %}
 
 {% block main %}
-
 
     <h2> Actions</h2>
 
@@ -35,10 +34,10 @@
         <tbody>
             {% for word in words %}
                 <tr>
-                    <td><a href = "word_info.html/{{ word[0] }}">{{ word[1] }} </a></td>
+                    <td>{{ word[0] }}</td>
+                    <td>{{ word[1] }}</td>
                     <td>{{ word[2] }}</td>
                     <td>{{ word[3] }}</td>
-                    <td>{{ word[4] }}</td>
 
 
 
