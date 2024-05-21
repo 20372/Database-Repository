@@ -5,16 +5,6 @@
 
     <h2> Actions</h2>
 
-    <div class="catergories_list-dictionary">
-        <ul>
-            {% for catergory in catergories %}
-                <li>
-                    <a href="/dictionary/{{ catergory[0] }}">{{ catergory[1] }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-
     <form action="{{ url_for('render_dictionary_page', cat_id=cat_id) }}" method="GET">
         <label for="word-search">Enter a word:</label>
         <input type="text" name="search" value="{{ search_term }}" placeholder="Search...">

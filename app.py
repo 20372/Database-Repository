@@ -56,7 +56,7 @@ def render_home_page():
     return render_template('home.html', logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
 
 
-@app.route('/dictionary_page', methods=['GET'])
+@app.route('/dictionary_page', methods=['POST','GET'])
 def render_dictionary_page():
     if is_logged_in_teacher():
         print("Teacher if logged in!")
@@ -67,6 +67,13 @@ def render_dictionary_page():
     cur = con.cursor()
     cur.execute(query)
     category_list = cur.fetchall()
+    if request.method == "POST":
+        con = create_connection(DATABASE)
+        query3 = "SELECT * FROM table_word"
+        cur = con.cursor()
+        cur.execute(query3)
+        word = cur.fetchall()
+        con.close()
 
     if search:    #search function
         query2 = """SELECT word_id, english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE english_word LIKE ? OR te_reo_word LIKE ?"""
