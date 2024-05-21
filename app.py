@@ -55,22 +55,30 @@ def render_home():
 def render_home_page():
     return render_template('home.html', logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
 
-@app.route('/dictionary_page')
+
+@app.route('/dictionary_page', methods=['GET'])
 def render_dictionary_page():
     if is_logged_in_teacher():
         print("Teacher if logged in!")
+
+    search = request.args.get('search', '').lower().strip() #args stops attributeError by returning an empty string before you search something
     con = create_connection(DATABASE)
     query = "SELECT cat_id, category_name FROM category_table"
     cur = con.cursor()
     cur.execute(query)
     category_list = cur.fetchall()
-    query2 = "SELECT word_id, english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id"
-    cur = con.cursor()
-    cur.execute(query2)
+
+    if search:    #search function
+        query2 = """SELECT word_id, english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE english_word LIKE ? OR te_reo_word LIKE ?"""
+        cur.execute(query2, ('%' + search + '%', '%' + search + '%'))
+    else:     #if no search term gets every word from the database and displays that instead
+        query2 = """SELECT word_id, english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id"""
+        cur.execute(query2)
+
     word = cur.fetchall()
     con.close()
-    return render_template('dictionary_page.html', logged_in = is_logged_in(), categories=category_list, words=word, teacher_log = is_logged_in_teacher())
 
+    return render_template('dictionary_page.html', logged_in=is_logged_in(), categories=category_list, words=word,teacher_log=is_logged_in_teacher())
 @app.route('/word_info/<word_id>')
 def render_word_info(word_id):
     if is_logged_in_teacher():
