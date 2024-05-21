@@ -76,16 +76,12 @@ def render_word_info(word_id):
     if is_logged_in_teacher():
         print("Teacher if logged in!")
     con = create_connection(DATABASE)
-    query = "SELECT cat_id, category_name FROM category_table"
+    query = "SELECT english_word, te_reo_word, category_name, levels, user_fk, description FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE table_word.word_id = ?"
     cur = con.cursor()
-    cur.execute(query)
-    category_list = cur.fetchall()
-    query2 = "SELECT english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id"
-    cur = con.cursor()
-    cur.execute(query2)
+    cur.execute(query, (word_id,))
     word = cur.fetchall()
     con.close()
-    return render_template('word_info.html', logged_in = is_logged_in(), categories=category_list, words=word, teacher_log = is_logged_in_teacher())
+    return render_template('word_info.html', logged_in = is_logged_in(), words=word, teacher_log = is_logged_in_teacher())
 
 
 

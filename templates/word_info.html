@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block pageheading %}Maori and English Words More Info{% endblock %}
+{% block pageheading %}More Information{% endblock %}
 
 {% block main %}
 
@@ -27,7 +27,9 @@
                 <th>English Word</th>
                 <th>Maori Word</th>
                 <th>Category</th>
-                <th>More Info</th>
+                <th>Level</th>
+                <th>Description</th>
+                <th>User ID</th>
             </tr>
         </thead>
 
@@ -38,6 +40,8 @@
                     <td>{{ word[1] }}</td>
                     <td>{{ word[2] }}</td>
                     <td>{{ word[3] }}</td>
+                    <td>{{ word[5] }}</td>
+                    <td>{{ word[6] }}</td>
 
 
 
