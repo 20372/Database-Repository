@@ -8,7 +8,7 @@ from flask_bcrypt import Bcrypt
 DATABASE = "identifier.sqlite"
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-app.secret_key = "ufbbwu19274" #key used for encrypting the password
+app.secret_key = "ufbbwu19274"
 def create_connection(db_file): #connects to the database
     try:
         connection = sqlite3.connect(db_file)
@@ -56,6 +56,26 @@ def render_home_page():
     return render_template('home.html', logged_in = is_logged_in(), teacher_log = is_logged_in_teacher())
 
 
+@app.route('/sort_by_category/<cat_id>', methods=['POST', 'GET'])
+def render_sort_by_category_page(cat_id):
+    if is_logged_in_teacher():
+        print("Teacher if logged in!")
+    con = create_connection(DATABASE)
+
+    query = "SELECT cat_id, category_name FROM category_table"
+    cur = con.cursor()
+    cur.execute(query)
+    category_list = cur.fetchall()
+
+    cur = con.cursor()
+    query = """SELECT word_id, english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE cat_id = ?"""
+    cur.execute(query, (cat_id,))
+    word = cur.fetchall()
+    con.close()
+    return render_template('sort_by_category.html', logged_in=is_logged_in(), words=word,teacher_log=is_logged_in_teacher(), categories=category_list)
+
+
+
 @app.route('/dictionary_page', methods=['POST','GET'])
 def render_dictionary_page():
     if is_logged_in_teacher():
@@ -67,13 +87,6 @@ def render_dictionary_page():
     cur = con.cursor()
     cur.execute(query)
     category_list = cur.fetchall()
-    if request.method == "POST":
-        con = create_connection(DATABASE)
-        query3 = "SELECT * FROM table_word"
-        cur = con.cursor()
-        cur.execute(query3)
-        word = cur.fetchall()
-        con.close()
 
     if search:    #search function
         query2 = """SELECT word_id, english_word, te_reo_word, category_name FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE english_word LIKE ? OR te_reo_word LIKE ?"""
@@ -91,12 +104,26 @@ def render_word_info(word_id):
     if is_logged_in_teacher():
         print("Teacher if logged in!")
     con = create_connection(DATABASE)
-    query = "SELECT english_word, te_reo_word, category_name, levels, user_fk, description FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE table_word.word_id = ?"
+    query = "SELECT word_id, english_word, te_reo_word, category_name, levels, description, word_date FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE table_word.word_id = ?"
     cur = con.cursor()
-    cur.execute(query, (word_id,))
-    word = cur.fetchall()
+
+    try:
+        cur.execute(query, (word_id,))
+        word = cur.fetchall()
+    except Exception as e:
+        print(e)
+
+    query2 = "SELECT f_name, l_name FROM table_word INNER JOIN users_table ON users_table.users_id = table_word.user_fk WHERE word_id = ?"
+    try:
+        cur.execute(query2, (word_id,))
+        user_name = cur.fetchall()
+        print(user_name)
+    except Exception as e:
+        print(e)
+
+
     con.close()
-    return render_template('word_info.html', logged_in = is_logged_in(), words=word, teacher_log = is_logged_in_teacher())
+    return render_template('word_info.html', logged_in = is_logged_in(), words=word, teacher_log = is_logged_in_teacher(), user=user_name)
 
 
 
@@ -239,17 +266,17 @@ def add_word():
         english_word = request.form.get('english_word').lower().strip()
         te_reo_word = request.form.get('te_reo_word').lower().strip()
         description = request.form.get('description').lower().strip()
+        word_date = request.form.get('word_date').lower().strip()
+        user_fk = request.form.get('user').lower().strip()
         category = request.form.get('cat_id').lower().strip()
         category_split = category.split(", ")
         cat_fk = category_split[0].title()
-        print(category)
         level = request.form.get('level').lower().strip()
-        users_fk = request.form.get('')
         con = create_connection(DATABASE)
-        query = "INSERT INTO table_word (english_word, te_reo_word, description, cat_fk, level, users_fk ) VALUES (?, ?, ?, ?, ?, ?)"
+        query = "INSERT INTO table_word (english_word, te_reo_word, description, levels, cat_fk, user_fk, word_date) VALUES (?, ?, ?, ?, ?, ?, ?)"
 
         cur = con.cursor()
-        words = (english_word, te_reo_word, description, cat_fk, level, users_fk)
+        words = (english_word, te_reo_word, description, level, cat_fk, user_fk, word_date)
         cur.execute(query, words)
         con.commit()
         con.close()
