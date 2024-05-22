@@ -22,6 +22,7 @@
                 <th>User of Entry</th>
                 <th>Date of Entry</th>
                 <th>Word ID</th>
+                <th>Image</th>
             </tr>
         </thead>
 
@@ -36,7 +37,11 @@
                     <td>{{ user[0] }}</td>
                     <td>{{ word[6] }}</td>
                     <td>{{ word[0] }}</td>
-
+                    {% if word[8] %}
+                    <td> <img src= '{{ url_for('static', filename='images/' + word[1] + '.jpg') }}'> </td>
+                    {% else %}
+                    <td> <img src= '{{ url_for('static', filename='images/noimage' + '.jpg') }}'> </td>
+                    {% endif %}
 
                 </tr>
             {% endfor %}

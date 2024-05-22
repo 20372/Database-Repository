@@ -104,7 +104,7 @@ def render_word_info(word_id):
     if is_logged_in_teacher():
         print("Teacher if logged in!")
     con = create_connection(DATABASE)
-    query = "SELECT word_id, english_word, te_reo_word, category_name, levels, description, word_date FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE table_word.word_id = ?"
+    query = "SELECT word_id, english_word, te_reo_word, category_name, levels, description, word_date, image FROM table_word INNER JOIN category_table ON table_word.cat_fk = cat_id WHERE table_word.word_id = ?"
     cur = con.cursor()
 
     try:
