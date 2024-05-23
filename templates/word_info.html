@@ -3,7 +3,6 @@
 
 {% block main %}
 
-    <h2> Actions</h2>
 
     <form action="{{ url_for('render_dictionary_page', cat_id=cat_id) }}" method="GET">
         <label for="word-search">Enter a word:</label>
@@ -37,8 +36,8 @@
                     <td>{{ user[0] }}</td>
                     <td>{{ word[6] }}</td>
                     <td>{{ word[0] }}</td>
-                    {% if word[8] %}
-                    <td> <img src= '{{ url_for('static', filename='images/' + word[1] + '.jpg') }}'> </td>
+                    {% if word[7] %}
+                    <td> <img src= '{{ url_for('static', filename='images/' + word[7] + '.jpg') }}'> </td>
                     {% else %}
                     <td> <img src= '{{ url_for('static', filename='images/noimage' + '.jpg') }}'> </td>
                     {% endif %}
