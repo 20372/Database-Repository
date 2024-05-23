@@ -2,36 +2,37 @@
 
 
 {% block main %}
+      <!-- Start of the form -->
     <form class="dataForm" method="post">
         <div class="form-group">
-            <div class="form-label"><label for="fname">First Name:</label></div>
-            <div class="form-element"><input type="text" name="fname" id="fname" required></div>
+            <div class="form-label"><label for="fname">First Name:</label></div> <!-- Label for First Name -->
+            <div class="form-element"><input type="text" name="fname" id="fname" required></div> <!-- Input for first name is required to submit -->
         </div>
 
         <div class="form-group">
             <div class="form-label"><label for="lname">Last Name:</label></div>
-            <div class="form-element"><input type="text" name="lname" id="lname" required></div>
+            <div class="form-element"><input type="text" name="lname" id="lname" required></div>  <!-- Same as above but for last name -->
         </div>
 
         <div class="form-group">
-            <div class="form-label"><label for="email">Email Address:</label></div>
+            <div class="form-label"><label for="email">Email Address:</label></div>   <!-- Same as above but for email -->
             <div class="form-element"><input type="email" name="email" id="email" required></div>
         </div>
 
         <div class="form-group">
-            <div class="form-label"><label for="password">Password:</label></div>
+            <div class="form-label"><label for="password">Password:</label></div>  <!-- Same as above but for password -->
             <div class="form-element"><input type="password" name="password" id="password" required></div>
         </div>
 
         <div class="form-group">
-            <div class="form-label"><label for="password2">Password (again):</label></div>
+            <div class="form-label"><label for="password2">Password (again):</label></div> <!-- Same as above but for password2 -->
             <div class="form-element"><input type="password" name="password2" id="password2" required></div>
         </div>
 
         <div class="form-group">
-            <div class="form-label"><label>Are you a teacher?</label></div>
+            <div class="form-label"><label>Are you a teacher?</label></div> <!-- Displays are you teacher message -->
             <div class="form-element">
-                <select name="teacher" id="teacher">
+                <select name="teacher" id="teacher">  <!-- Drop down box with 2 options yes or no -->
                     <option value="yes">Yes</option>
                     <option value="no" selected>No</option>
                 </select>
@@ -40,15 +41,15 @@
 
         <div class="form-group">
             <div></div>
-            <div class="form-element"><input type="reset"></div>
+            <div class="form-element"><input type="reset"></div>  <!-- reset button -->
         </div>
 
         <div class="form-group">
             <div></div>
-            <div class="form-element"><input type="submit"></div>
+            <div class="form-element"><input type="submit"></div>  <!-- submit button -->
         </div>
     </form>
     <footer>
-          <p>&copy; Oliver Howorth 2024</p>
+          <p>&copy; Oliver Howorth 2024</p>  <!-- footer with my name -->
         </footer>
 {% endblock %}

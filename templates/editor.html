@@ -3,12 +3,12 @@
 {% block pageheading %}Admin Page{% endblock %}
 {% block main %}
 
-    <h4>Add Category</h4>
+    <h4>Add Category</h4>  <!--  Add category section of this html page-->
 
     <form class="myform" method="post" action="/add_category">
      <div class="form-group">
-            <div class="form-label"><label for="name">Category Name:</label></div>
-            <div class="form-element"><input type="text" name="name" id="name" required></div>
+            <div class="form-label"><label for="name">Category Name:</label></div>  <!--Displays the category name button and box  -->
+            <div class="form-element"><input type="text" name="name" id="name" required></div> <!--cant leave empty because its required to click submit  -->
         </div>
 
      <div class="form-group">
@@ -18,14 +18,14 @@
 
     </form>
 
-    <h4>Delete Category </h4>
+    <h4>Delete Category </h4> <!--Del category heading  -->
 
-    <form class="myform" method="post" action="/delete_category">
+    <form class="myform" method="post" action="/delete_category">  <!--action is the app route it sends you to when this is clicked  -->
      <div class="form-group">
             <div class="form-label"><label for="name">Category Name:</label></div>
             <div class="form-element">
                 <select id="cat_id" name="cat_id">
-                    {% for category in categories %}
+                    {% for category in categories %}  <!--drop down box with every category   -->
                     <option value="{{ category[0] }}, {{ category[1] }}">{{ category[1] }}</option>
                     {% endfor %}
                 </select>
@@ -35,19 +35,19 @@
 
      <div class="form-group">
             <div class="form-label"></div>
-            <div class="form-element"><input type="submit" value="Delete Category"></div>
+            <div class="form-element"><input type="submit" value="Delete Category"></div> <!-- Delete Category button  -->
         </div>
 
     </form>
 
-    <h4>Add Word</h4>
+    <h4>Add Word</h4> <!--add word heading   -->
 
     <form class="myform" method="post" action="/add_word">
      <div class="form-group">
          <label for="english_word">English Word:</label><br>
          <input type="text" id="english_word" name="english_word"><br>
          <label for="te_reo_word">Te reo Word:</label><br>
-         <input type="text" id="te_reo_word" name="te_reo_word"><br>
+         <input type="text" id="te_reo_word" name="te_reo_word"><br>   <!--Displays the box for users to input the information for the word they wise to enter into the database  -->
         <label for="level">Level:</label><br>
         <input type="text" id="level" name="level"><br>
         <label for="description">Description:</label><br>
@@ -55,10 +55,10 @@
         <label for="word_date">Date:</label><br>
          <input type="text" id="word_date" name="word_date"><br>
         <label for="user">User ID:</label><br>
-         <input type="text" id="user" name="user"><br>
+         <input type="text" id="user" name="user" pattern="[0-9]*"><br>
         <label for="category">Category:</label><br>
          <select id="cat_id" name="cat_id">
-                    {% for category in categories %}
+                    {% for category in categories %}  <!--Drop down box with the categories!!!  -->
                     <option value="{{ category[0] }}, {{ category[1] }}">{{ category[1] }}</option>
                     {% endfor %}
          </select>
@@ -70,11 +70,11 @@
 
      </form>
 
-    <h4>Delete Word</h4>
+    <h4>Delete Word</h4> <!-- Delete word heading  -->
 
     <form class="myform" method="post" action="/delete_word">
         <div class="form-group">
-            <label class="form-label" for="word_id">Word ID:</label>
+            <label class="form-label" for="word_id">Word ID:</label> <!-- pattern is used to ensure on numbers get accepted!!!! -->
             <div class="form-element"><input type="text" name="word_id" id="word_id" pattern="[0-9]*" min="1" max="309" required></div>
         </div>
         <div class="form-group">
@@ -88,6 +88,6 @@
 </html>
 
     <footer>
-          <p>&copy; Oliver Howorth 2024</p>
+          <p>&copy; Oliver Howorth 2024</p> <!-- Footer will my name. -->
         </footer>
 {% endblock %}

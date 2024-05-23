@@ -13,7 +13,7 @@
     <table>
         <thead>
             <tr>
-                <th>English Word</th>
+                <th>English Word</th>  <!-- All the colloums of the more info table -->
                 <th>Maori Word</th>
                 <th>Category</th>
                 <th>Level</th>
@@ -26,7 +26,7 @@
         </thead>
 
         <tbody>
-            {% for word in words %}
+            {% for word in words %}  <!-- for loop that displays the correct information from the database -->
                 <tr>
                     <td>{{ word[1] }}</td>
                     <td>{{ word[2] }}</td>
@@ -37,9 +37,9 @@
                     <td>{{ word[6] }}</td>
                     <td>{{ word[0] }}</td>
                     {% if word[7] %}
-                    <td> <img src= '{{ url_for('static', filename='images/' + word[7] + '.jpg') }}'> </td>
+                    <td> <img src= '{{ url_for('static', filename='images/' + word[7] + '.jpg') }}'> </td> <!-- displays the image if theres is one -->
                     {% else %}
-                    <td> <img src= '{{ url_for('static', filename='images/noimage' + '.jpg') }}'> </td>
+                    <td> <img src= '{{ url_for('static', filename='images/noimage' + '.jpg') }}'> </td> <!-- else displays the place holder imaghe -->
                     {% endif %}
 
                 </tr>

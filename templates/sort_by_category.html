@@ -6,16 +6,16 @@
     <ul>
         {% for catergory in categories %}
                 <li>
-                    <a href="/sort_by_category/{{ catergory[0] }}">{{ catergory[1] }}</a>
+                    <a href="/sort_by_category/{{ catergory[0] }}">{{ catergory[1] }}</a>  <!-- For loop that display the number of categories-->
                 </li>
         {% endfor %}
     </ul>
 
     <h2> Actions</h2>
 
-    <form action="{{ url_for('render_dictionary_page', cat_id=cat_id) }}" method="GET">
+    <form action="{{ url_for('render_dictionary_page', cat_id=cat_id) }}" method="GET"> <!-- app route when users click the search bar -->
         <label for="word-search">Enter a word:</label>
-        <input type="text" name="search" value="{{ search_term }}" placeholder="Search...">
+        <input type="text" name="search" value="{{ search_term }}" placeholder="Search..."> <!--HTML for the search bar -->
         <button type="submit">Search</button>
     </form>
 
@@ -24,16 +24,16 @@
             <tr>
                 <th>English Word</th>
                 <th>Maori Word</th>
-                <th>Category</th>
+                <th>Category</th> <!--Columm for the table   -->
             </tr>
         </thead>
 
         <tbody>
-            {% for word in words %}
+            {% for word in words %} <!-- for loop that displays the information from the database -->
                 <tr>
                     <td><a href="/word_info/{{ word[0] }}">{{ word[1] }}</a></td>
                     <td>{{ word[2] }}</td>
-                    <td>{{ word[3] }}</td>
+                    <td>{{ word[3] }}</td> <!-- Link that redirects you to the more info html page when clicked -->
                 </tr>
             {% endfor %}
         </tbody>
